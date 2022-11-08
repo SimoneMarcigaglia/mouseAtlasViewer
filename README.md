@@ -2,16 +2,23 @@
 A python package which allows to plot any brain region annotated in the Allen brain Atlas in a 3D interactive way with pyVista.
 
 ## Setup
-Install the required packages by running 
+Install the mouseAtlasViewer package by navigating to the cloned folder and running: 
 ```
-pip install -r requirements.txt
+pip install .
 ```
-either machine-wide or in a local environment.
+either machine-wide or in a local environment. For older versions of Python, *setuptools* might need to be installed separately  (and before the command above) with:
+```
+pip install setuptools
+```
 
 ## Usage
 
-Check out *exampleUsage.py* for an example of how to create a plot or an animation. The creation 
-of each surface can take some time and be quite computationally expensive (on RAM usage especially).
+Check out *exampleUsage.py* for an example of how to create a plot or an animation.  Once the package is installed, the mainmodules can be imported with:
+```Python
+from mouseAtlasViewer import load
+from mouseAtlasViewer import view
+```
+The creation of each surface can take some time and be quite computationally expensive (on RAM usage especially).
 This higly depends on the version of the atlas used, where the high-resolution(10um) version will take the most time 
 but will be the best looking.
 
