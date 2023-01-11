@@ -55,8 +55,10 @@ def findChildren(targetId, st):
                     if indexToCheck not in indices:
                         indices = np.append(indices, indexToCheck)
                         break
+                elif col == nCols-1:
+                    indices = np.append(indices, filteredTree[row, col])
 
-    return indices
+        return indices
 
 
 def makeRegionByID(av, st, targetId):
