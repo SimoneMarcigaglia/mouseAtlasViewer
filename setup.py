@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='mouseAtlasViewer',
-    version='0.0.1',
+    version='1.0',
     description="A python package for interactive 3D visualisation of mouse brain regions annotated in the Allen atlas.",
     url='https://github.com/SimoneMarcigaglia/mouseAtlasViewer',
     author='Simone Marcigaglia',
@@ -19,7 +19,11 @@ setup(
                       'tqdm>=4.64.1',
                       'wget>=3.2',
                       ],
-
+    package_data={
+        'mouseAtlasViewer': [
+            'structure_tree_safe_2017.csv'
+        ]
+    },
     classifiers=[
         'Intended Audience :: Science/Research',
         'License :: OSI Approved :: BSD License',

@@ -7,3 +7,6 @@ regions annotated in the Allen atlas.
 
 __version__ = "0.0.1"
 __author__ = 'Simone Marcigaglia'
+
+from .load import downloadAtlas, loadAtlas
+from .process import makeBrainContour, makeRegionByID, getRegionData

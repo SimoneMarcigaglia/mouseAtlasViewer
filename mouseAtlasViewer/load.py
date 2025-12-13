@@ -11,6 +11,9 @@ def downloadAtlas(destinationFolder):
 
     resolutions = [10, 25, 50, 100]
 
+    if not exists(destinationFolder):
+        os.makedirs(destinationFolder)
+
     for res in resolutions:
         filename = "annotation_" + str(res) + ".nrrd"
         filepath = os.path.join(destinationFolder, filename)
@@ -22,17 +25,6 @@ def downloadAtlas(destinationFolder):
             wget.download(fileURL, out=filepath)
 
             print("\r Downloaded " + filename)
-
-    url = 'http://data.cortexlab.net/allenCCF/'
-    filename = 'structure_tree_safe_2017.csv'
-    filepath = os.path.join(destinationFolder, filename)
-    if exists(filepath):
-        print(filename + " already present.")
-    else:
-        fileURL = url + filename
-        wget.download(fileURL, out=filepath)
-
-        print("\r Downloaded " + filename)
 
 
 def loadAtlas(atlasFolder, atlasResolution=100):

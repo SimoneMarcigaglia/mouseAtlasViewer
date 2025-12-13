@@ -1,0 +1,22 @@
+name: mav
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+
+  - numpy>=1.23.1
+  - pandas>=1.4.4
+  - pyqt>=5.15.7           # Use 'pyqt' for the conda package
+  - pyvista>=0.36.1
+  - pyvistaqt>=0.9.0
+  - tqdm>=4.64.1
+  - imageio-ffmpeg>=0.4.7 
+  - pynrrd>=1.0.0
+  
+  - pip
+  - pip:
+    - wget>=3.2
+    - setuptools
+    # This line is crucial: it installs your local project code using the pip editable install method
+    - -e .

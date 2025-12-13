@@ -1,5 +1,4 @@
-from mouseAtlasViewer import load
-from mouseAtlasViewer import view
+import mouseAtlasViewer as mav
 import os.path
 import pandas as pd
 import pyvista as pv
@@ -12,12 +11,13 @@ atlasResolution = 100  # available resolutions are 10,25,50 and 100 microns
 
 
 # %% Load atlas
+mav.downloadAtlas(atlasFolder)
 st = pd.read_csv(os.path.join(atlasFolder, 'structure_tree_safe_2017.csv'))
-ann = load.loadAtlas(atlasFolder, atlasResolution)
+ann = mav.loadAtlas(atlasFolder, atlasResolution)
 
 
 # %% Create brain surface
-brain = view.makeBrainContour(ann)
+brain = mav.makeBrainContour(ann)
 
 
 # %% Set up 3d plotter
@@ -41,7 +41,7 @@ annotations = ["Main olfactory bulb", "Fourth ventricle",
 abbreviations = ["MOB", "V4", "CEA", "TH", "SUB"]
 
 for r, regionId in enumerate(regionIndices):
-    surf = view.makeRegionByID(ann, st, regionId)
+    surf = mav.makeRegionByID(ann, st, regionId)
     pInt.add_mesh(surf, color=colours[r])
 
 
