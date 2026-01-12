@@ -10,22 +10,6 @@ def _load_st_data(): #Read in region list CSV as a pandas DataFrame
     return pd.read_csv(str(file_path))
 
 def _matriciseTree(st):
-
-    paths = st['structure_id_path'].astype('string')
-    slashes = paths.apply(lambda x: x.count('/'))
-
-    for i in range(len(paths)):
-        for k in range(12-slashes[i]):
-            paths[i] = paths[i] + '0/'
-
-    matrixTree = paths.str.split('/', expand=True)
-    matrixTree = matrixTree.iloc[:, 1:11]
-    matrixTree = matrixTree.astype('int')
-    matrixTree = matrixTree.to_numpy()
-
-    return matrixTree
-
-def _matriciseTree_optimized(st):
     # 1. Split the path string directly into columns
     # Example path: '/1/8/997/...'
     # Split: ['','1','8','997',...]
@@ -56,7 +40,7 @@ def _matriciseTree_optimized(st):
 # 2. Calculate the matrix tree once at module load
 # This runs the first time 'from mouseatlasviewer import view' is executed.
 ST_DATA = _load_st_data()
-MATRIX_TREE = _matriciseTree_optimized(ST_DATA)
+MATRIX_TREE = _matriciseTree(ST_DATA)
 
 
 
@@ -100,46 +84,6 @@ def _findChildren(targetId):
 
     return indices
 
-def _findChildren_optimized(targetId):
-    
-    # 1. Handle case where the ID does not exist
-    if not (MATRIX_TREE == targetId).any():
-        return np.array([targetId], dtype=int)
-
-    # 2. Filter Rows: Create a boolean mask of rows that contain the target ID
-    # (Same as before)
-    mask = (MATRIX_TREE == targetId).any(axis=1)
-    filteredTree = MATRIX_TREE[mask, :]
-
-    # 3. Find Column Index (Depth) of the Target ID
-    # np.argmax finds the index of the FIRST TRUE value in each row.
-    # This efficiently finds the column index where the targetId first appears in each path.
-    # We use a temp mask to only search in the filtered rows.
-    col_indices = np.argmax(filteredTree == targetId, axis=1)
-
-    # 4. Extract the Child IDs using the Calculated Indices
-    # We create a simple array representing the row index (0, 1, 2, 3...)
-    row_indices = np.arange(filteredTree.shape[0])
-    
-    # The child is ALWAYS in the column immediately following the target ID's column.
-    child_cols = col_indices + 1
-    
-    # Use advanced indexing to pull the value at [row_indices, child_cols]
-    # This selects the (N+1)th element for every row where N is the targetId's position.
-    child_ids = filteredTree[row_indices, child_cols]
-
-    # 5. Final Cleanup and Uniqueness
-    
-    # Filter out the '0' padding entries (which means the end of a branch)
-    unique_indices = child_ids[child_ids != 0]
-
-    # Add the targetId itself (required for the final contour mask)
-    unique_indices = np.append(unique_indices, targetId)
-
-    # Return only the unique IDs, ensuring no duplicates.
-    return np.unique(unique_indices)
-
-
 def getRegionData(abbreviation):
     """
     Looks up structure data (ID and name) using the region abbreviation.
@@ -174,7 +118,7 @@ def getRegionData(abbreviation):
 
 def makeRegionByID(av,targetId):
 
-    indices = _findChildren_optimized(targetId)
+    indices = _findChildren(targetId)
 
     region = np.full(av.shape, False)
 

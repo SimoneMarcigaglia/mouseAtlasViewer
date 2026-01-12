@@ -12,8 +12,20 @@ conda activate mav
 
 Check out *exampleUsage.py* for an example of how to create a plot or an animation.  Once the package is installed, the mainmodules can be imported with:
 ```Python
-from mouseAtlasViewer import load
-from mouseAtlasViewer import view
+import mouseAtlasViewer as mav
+```
+and used with the following methods:
+
+```Python
+mav.downloadAtlas(atlasFolder)
+
+ann = mav.loadAtlas(atlasFolder, atlasResolution)
+
+brain = mav.makeBrainContour(ann)
+
+region_data = mav.getRegionData("TH") # TH short fo thalamus
+
+surf = mav.makeRegionByID(ann, region_data["id"])
 ```
 The creation of each surface can take some time and be quite computationally expensive (on RAM usage especially).
 This higly depends on the version of the atlas used, where the high-resolution(10um) version will take the most time 
@@ -23,7 +35,7 @@ The spreadsheet *Annotated regions list.xlsx* can be used to quickly look up the
 
 ## Example
 
-![example animation](orbit.gif)
+![example animation](media/orbit_10.gif)
 
 ## Further info
 
